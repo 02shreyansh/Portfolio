@@ -377,6 +377,26 @@ form .btn2{
 nav .fas{
     display: none;
 }
+#scrollToTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color:white;
+    color: #000;
+    border: 3px solid #ff004f;
+    border-radius: 12px;
+    
+    cursor: pointer;
+    font-size: 16px;
+    padding: 9px 15px;
+    
+    transition: background-color 0.3s ;
+  }
+  
+#scrollToTopBtn:hover {
+    background-color:#ff004f;
+}
 @media only screen and (max-width:600px){
     #header{
         background-image: url(IMG-20231206-WA0059.jpg);
@@ -459,6 +479,25 @@ nav .fas{
     nav ul li a:hover::after
     {
         width: 100%;
+    }
+    #scrollToTopBtn{
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        
+        border-radius: 12px;
+        
+        
+        font-size: 16px;
+        font-weight: 900;
+       
+        
+        padding: 1px 9px;
+
+    }
+    #scrollToTopBtn:hover {
+        background-color:white;
     }
     
 }

@@ -22,6 +22,12 @@
                     <li><a href="#services">Services</a></li>
                     <li><a href="#portfolio">Portfolio</a></li>
                     <li><a href="#contact">Contact</a></li>
+                    
+                    
+
+                    
+                    
+
                     <i class="fas fa-times" onclick="closemenu()"></i>
 
                 </ul>
@@ -182,6 +188,12 @@
         
     </div>
 
+    
+
+    
+
+    
+
 <script>
     // about
     var tablinks=document.getElementsByClassName("tab-links");
@@ -198,6 +210,7 @@
     }
 
 </script>
+
 <script>
     var sidemeu=document.getElementById("sidemenu");
     function openmenu(){
@@ -208,6 +221,14 @@
         sidemeu.style.right="-130px";
         
     }
+    document.body.addEventListener('touchstart', function (event) {
+    // Check if the touch event occurred outside the side menu
+        if (!sidemenu.contains(event.target)) {
+        // Close the side menu
+            closemenu();
+        }
+    });
+
 
 </script>
 <script>
@@ -256,6 +277,12 @@
     }
 
 </script>
+
+
+
+
+
+  
 
 
 </body>

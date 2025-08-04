@@ -7,8 +7,9 @@ import { Toaster } from "@/components/ui/sonner.tsx"
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Toaster
-      position="bottom-right"
+      position="top-right"
       closeButton
+      richColors
       expand={true}
       duration={2000}
     />

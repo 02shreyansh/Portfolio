@@ -1,17 +1,55 @@
-import { Button } from "@/components/ui/button"
-import { toast } from "sonner"
+import { Suspense } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
-function App() {
-  const showToast=()=>{
-    toast.success("hello setup")
-  }
+import { ThemeProvider } from "./contexts/ThemeContext";
+
+import Navigation from "./components/layout/Navigation";
+import Footer from "./components/layout/Footer";
+import PageLoader from "./components/animations/PageTransitions/PageLoader";
+
+import routes from "./routes";         
+
+function AnimatedRoutes() {
+  const location = useLocation();
+
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center">
-      <Button onClick={showToast}>Click me</Button>
-      
-    </div>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        {routes.map(({ path, element: Element }) => (
+          <Route
+            key={path}
+            path={path}
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <Element />
+              </Suspense>
+            }
+          />
+        ))}
 
-  )
+        {/* Fallback → 404 */}
+        <Route path="*" element={<Navigate replace to="/404" />} />
+      </Routes>
+    </AnimatePresence>
+  );
 }
 
-export default App
+export default function App() {
+  return (
+    <ThemeProvider>
+      <Router>
+        {/* Layout wrapper */}        
+        <div className="flex min-h-screen flex-col bg-background text-foreground antialiased">
+          <Navigation />
+
+          <main className="flex-1">
+            <AnimatedRoutes />
+          </main>
+
+          <Footer />
+        </div>
+      </Router>
+    </ThemeProvider>
+  );
+}

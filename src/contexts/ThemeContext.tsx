@@ -1,7 +1,7 @@
-const ThemeContext = () => {
+const ThemeProvider = () => {
   return (
     <div>ThemeContext</div>
   )
 }
 
-export default ThemeContext
+export {ThemeProvider}

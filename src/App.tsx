@@ -2,13 +2,13 @@ import { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
-import { ThemeProvider } from "./contexts/ThemeContext";
+// import { ThemeProvider } from "@/contexts/ThemeContext";
 
-import Navigation from "./components/layout/Navigation";
-import Footer from "./components/layout/Footer";
-import PageLoader from "./components/animations/PageTransitions/PageLoader";
+import Footer from "@/components/layout/Footer";
+import {PageLoader} from "@/components/animations/PageTransitions";
 
-import routes from "./routes";         
+import routes from "@/routes";         
+import Header from "@/components/layout/Header";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -37,11 +37,11 @@ function AnimatedRoutes() {
 
 export default function App() {
   return (
-    <ThemeProvider>
+    // <ThemeProvider>
       <Router>
         {/* Layout wrapper */}        
         <div className="flex min-h-screen flex-col bg-background text-foreground antialiased">
-          <Navigation />
+          <Header />
 
           <main className="flex-1">
             <AnimatedRoutes />
@@ -50,6 +50,6 @@ export default function App() {
           <Footer />
         </div>
       </Router>
-    </ThemeProvider>
+    // </ThemeProvider>
   );
 }

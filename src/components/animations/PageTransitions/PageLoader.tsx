@@ -5,7 +5,6 @@ const PageLoader = () => {
   const [loadingText, setLoadingText] = useState("Initializing");
   const [progress, setProgress] = useState(0);
 
-  // Memoized loading texts to prevent recreation
   const loadingTexts = useMemo(() => [
     "Initializing",
     "Loading assets", 
@@ -14,23 +13,21 @@ const PageLoader = () => {
     "Welcome"
   ], []);
 
-  // Optimized text cycling
   useEffect(() => {
     let currentIndex = 0;
     const interval = setInterval(() => {
       currentIndex = (currentIndex + 1) % loadingTexts.length;
       setLoadingText(loadingTexts[currentIndex]);
-    }, 1000); // Slightly slower for better UX
+    }, 1000); 
 
     return () => clearInterval(interval);
   }, [loadingTexts]);
 
-  // Smoother progress simulation
   useEffect(() => {
     const progressInterval = setInterval(() => {
       setProgress(prev => {
         if (prev >= 100) return 100;
-        const increment = Math.random() * 8 + 2; // More consistent increments
+        const increment = Math.random() * 8 + 2; 
         return Math.min(prev + increment, 100);
       });
     }, 150);
@@ -38,9 +35,8 @@ const PageLoader = () => {
     return () => clearInterval(progressInterval);
   }, []);
 
-  // Memoized particles to prevent performance issues
   const particles = useMemo(() => 
-    [...Array(12)].map((_, i) => ({ // Reduced from 20 to 12
+    [...Array(12)].map((_, i) => ({ 
       id: i,
       x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1920),
       y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1080),
@@ -55,7 +51,6 @@ const PageLoader = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
     >
-      {/* Optimized gradient background */}
       <motion.div
         className="absolute inset-0"
         style={{
@@ -75,8 +70,6 @@ const PageLoader = () => {
           ease: "easeInOut"
         }}
       />
-
-      {/* Optimized floating particles */}
       <div className="absolute inset-0 pointer-events-none">
         {particles.map((particle) => (
           <motion.div
@@ -96,8 +89,6 @@ const PageLoader = () => {
           />
         ))}
       </div>
-
-      {/* Main content */}
       <div className="relative flex h-full items-center justify-center p-4">
         <motion.div
           className="text-center max-w-md mx-auto"
@@ -105,14 +96,12 @@ const PageLoader = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
         >
-          {/* Enhanced logo section */}
           <motion.div className="mb-10">
             <motion.div
               className="relative mx-auto w-20 h-20 mb-6"
               animate={{ rotate: 360 }}
               transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
             >
-              {/* Simplified rings for better performance */}
               <motion.div
                 className="absolute inset-0 rounded-full border-2 border-purple-400/40"
                 animate={{ scale: [1, 1.05, 1] }}
@@ -148,8 +137,6 @@ const PageLoader = () => {
               Portfolio
             </motion.h1>
           </motion.div>
-
-          {/* Optimized spinner */}
           <div className="relative mx-auto mb-8 h-24 w-24">
             <motion.svg
               className="absolute inset-0"
@@ -184,8 +171,6 @@ const PageLoader = () => {
               transition={{ duration: 2.5, repeat: Infinity }}
             />
           </div>
-
-          {/* Enhanced progress bar */}
           <div className="mb-8 w-72 mx-auto">
             <div className="relative h-1.5 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
               <motion.div
@@ -211,8 +196,6 @@ const PageLoader = () => {
               {Math.round(Math.min(progress, 100))}%
             </motion.div>
           </div>
-
-          {/* Optimized text animations */}
           <div className="space-y-4">
             <AnimatePresence mode="wait">
               <motion.h2
@@ -262,8 +245,6 @@ const PageLoader = () => {
           </div>
         </motion.div>
       </div>
-
-      {/* Subtle signature */}
       <motion.div
         className="absolute bottom-6 left-1/2 transform -translate-x-1/2"
         initial={{ opacity: 0 }}

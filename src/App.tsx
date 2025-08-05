@@ -2,8 +2,7 @@ import { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
-// import { ThemeProvider } from "@/contexts/ThemeContext";
-
+import ThemeProvider  from "@/contexts/ThemeContext";
 import Footer from "@/components/layout/Footer";
 import {PageLoader} from "@/components/animations/PageTransitions";
 
@@ -28,7 +27,6 @@ function AnimatedRoutes() {
           />
         ))}
 
-        {/* Fallback → 404 */}
         <Route path="*" element={<Navigate replace to="/404" />} />
       </Routes>
     </AnimatePresence>
@@ -37,7 +35,7 @@ function AnimatedRoutes() {
 
 export default function App() {
   return (
-    // <ThemeProvider>
+    <ThemeProvider>
       <Router>
         {/* Layout wrapper */}        
         <div className="flex min-h-screen flex-col bg-background text-foreground antialiased">
@@ -50,6 +48,6 @@ export default function App() {
           <Footer />
         </div>
       </Router>
-    // </ThemeProvider>
+    </ThemeProvider>
   );
 }

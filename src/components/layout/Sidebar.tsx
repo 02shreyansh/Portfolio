@@ -1,6 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { motion, type Variants } from "framer-motion";
 import {
   Home,
   User,
@@ -17,11 +16,28 @@ import {
   ChevronRight
 } from "lucide-react";
 
-import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "../ui/tooltip";
-import { ScrollArea } from "../ui/scroll-area";
-import { Separator } from "../ui/separator";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarTrigger,
+  useSidebar,
+} from "@/components/ui/sidebar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface NavItem {
   href: string;
@@ -30,11 +46,11 @@ interface NavItem {
   badge?: string;
 }
 
-const Sidebar: React.FC = () => {
+const AppSidebar: React.FC = () => {
   const location = useLocation();
-  const [collapsed, setCollapsed] = useState(false);
+  const { state, open, setOpen, openMobile, setOpenMobile } = useSidebar();
 
-  // Optimized navigation items - memoized to prevent re-renders
+  // Navigation items
   const navItems: NavItem[] = useMemo(() => [
     { href: "/", label: "Home", icon: Home },
     { href: "/about", label: "About", icon: User },
@@ -49,126 +65,111 @@ const Sidebar: React.FC = () => {
     { href: "/resume", label: "Resume", icon: FileText }
   ], []);
 
-  // Optimized toggle function
-  const toggleCollapsed = useCallback(() => {
-    setCollapsed(prev => !prev);
-  }, []);
-
-  // Check active state efficiently
+  // Check active state
   const isActive = useCallback((href: string) => {
     return location.pathname === href || location.pathname.startsWith(`${href}/`);
   }, [location.pathname]);
 
-  // Simple motion variants
-  const sidebarVariants: Variants = {
-    expanded: { width: 240 },
-    collapsed: { width: 64 }
+  // Toggle sidebar
+  const toggleSidebar = () => {
+    setOpen(!open);
   };
 
   return (
-    <TooltipProvider delayDuration={500}>
-      <motion.aside
-        variants={sidebarVariants}
-        animate={collapsed ? "collapsed" : "expanded"}
-        transition={{ duration: 0.2, ease: "easeInOut" }}
-        className="hidden lg:flex h-screen flex-col border-r border-border bg-background"
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-3 border-b border-border">
-          <div className="flex items-center gap-2">
-            {!collapsed && (
-              <span className="text-sm font-semibold text-foreground">Portfolio</span>
-            )}
-          </div>
-          
+    <Sidebar collapsible="icon">
+      <SidebarHeader>
+        <div className="flex items-center justify-between px-2">
+          {open && <span className="text-sm font-semibold">Portfolio</span>}
           <Button
             variant="ghost"
             size="icon"
-            onClick={toggleCollapsed}
-            className="h-8 w-8"
+            onClick={toggleSidebar}
+            className="ml-auto h-8 w-8"
           >
-            {collapsed ? (
-              <ChevronRight className="h-4 w-4" />
-            ) : (
+            {open ? (
               <ChevronLeft className="h-4 w-4" />
+            ) : (
+              <ChevronRight className="h-4 w-4" />
             )}
           </Button>
         </div>
+      </SidebarHeader>
 
-        {/* Navigation */}
-        <ScrollArea className="flex-1">
-          <nav className="p-2 space-y-1">
-            {navItems.map(({ href, label, icon: Icon, badge }) => {
-              const active = isActive(href);
-              
-              const navItem = (
-                <NavLink
-                  key={href}
-                  to={href}
-                  className={`
-                    flex items-center gap-3 rounded-md px-3 py-2
-                    text-sm font-medium transition-colors
-                    ${active 
-                      ? "bg-accent text-accent-foreground" 
-                      : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
-                    }
-                  `}
-                >
-                  <Icon className="h-4 w-4 shrink-0" />
-                  
-                  {!collapsed && (
-                    <>
-                      <span className="truncate">{label}</span>
-                      {badge && (
-                        <Badge variant="secondary" className="h-4 px-1 text-xs ml-auto">
-                          {badge}
-                        </Badge>
-                      )}
-                    </>
-                  )}
-                </NavLink>
-              );
+      <SidebarContent>
+        <SidebarGroup>
+          {open && <SidebarGroupLabel>Navigation</SidebarGroupLabel>}
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {navItems.map(({ href, label, icon: Icon, badge }) => {
+                const active = isActive(href);
+                
+                const menuItem = (
+                  <SidebarMenuItem key={href}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={active}
+                      className={`${!open ? 'justify-center' : ''}`}
+                    >
+                      <NavLink to={href} className="flex items-center gap-2">
+                        <Icon className="h-4 w-4 shrink-0" />
+                        {open && (
+                          <>
+                            <span>{label}</span>
+                            {badge && (
+                              <Badge variant="secondary" className="h-4 px-1.5 text-xs ml-auto">
+                                {badge}
+                              </Badge>
+                            )}
+                          </>
+                        )}
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
 
-              // Show tooltip only when collapsed
-              return collapsed ? (
-                <Tooltip key={href}>
-                  <TooltipTrigger asChild>{navItem}</TooltipTrigger>
-                  <TooltipContent side="right">
-                    <div className="flex items-center gap-2">
-                      {label}
-                      {badge && (
-                        <Badge variant="secondary" className="h-4 px-1 text-xs">
-                          {badge}
-                        </Badge>
-                      )}
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              ) : (
-                navItem
-              );
-            })}
-          </nav>
-        </ScrollArea>
+                // Show tooltip when collapsed
+                if (!open) {
+                  return (
+                    <TooltipProvider key={href}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          {menuItem}
+                        </TooltipTrigger>
+                        <TooltipContent side="right" className="flex items-center gap-2">
+                          {label}
+                          {badge && (
+                            <Badge variant="secondary" className="h-4 px-1.5 text-xs">
+                              {badge}
+                            </Badge>
+                          )}
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  );
+                }
 
-        <Separator />
+                return menuItem;
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
 
-        <div className="p-3">
-          {!collapsed ? (
-            <div className="text-center">
-              <p className="text-xs text-muted-foreground">
-                Built By Shreyansh
-              </p>
-            </div>
+      <SidebarFooter>
+        <div className="px-2 py-1">
+          {open ? (
+            <p className="text-xs text-muted-foreground text-center">
+              Built By Shreyansh
+            </p>
           ) : (
             <div className="flex justify-center">
               <div className="w-2 h-2 bg-primary rounded-full" />
             </div>
           )}
         </div>
-      </motion.aside>
-    </TooltipProvider>
+      </SidebarFooter>
+    </Sidebar>
   );
 };
 
-export default Sidebar;
+export default AppSidebar;

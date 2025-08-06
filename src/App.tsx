@@ -3,12 +3,13 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "r
 import { AnimatePresence } from "framer-motion";
 
 import ThemeProvider from "@/contexts/ThemeContext";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import Footer from "@/components/layout/Footer";
 import { PageLoader } from "@/components/animations/PageTransitions";
 
 import routes from "@/routes";
 import Header from "@/components/layout/Header";
-import Sidebar from "./components/layout/Sidebar";
+import AppSidebar from "./components/layout/Sidebar";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -38,19 +39,23 @@ export default function App() {
   return (
     <ThemeProvider>
       <Router>
-        {/* Layout wrapper */}
-        <div className="flex min-h-screen flex-col bg-background text-foreground antialiased">
-          <Header />
-
-          <div className="flex">
-            <Sidebar />       {/* left column – hidden on mobile via lg:flex */}
-            <main className="flex-1">
-              <AnimatedRoutes />
-            </main>
+        <SidebarProvider>
+          <div className="flex min-h-screen w-full">
+            <AppSidebar />
+            
+            <SidebarInset>
+              <div className="flex min-h-screen flex-col bg-background text-foreground antialiased">
+                <Header />
+                
+                <main className="flex-1">
+                  <AnimatedRoutes />
+                </main>
+                
+                <Footer />
+              </div>
+            </SidebarInset>
           </div>
-
-          <Footer />
-        </div>
+        </SidebarProvider>
       </Router>
     </ThemeProvider>
   );

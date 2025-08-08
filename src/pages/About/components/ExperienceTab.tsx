@@ -16,16 +16,13 @@ export const ExperienceTab: React.FC<ExperienceTabProps> = ({ experiences }) => 
       transition={{ duration: 0.5 }}
       className="space-y-8"
     >
-      {/* Timeline Header */}
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
           Professional Journey
         </h2>
         <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full" />
       </div>
-      {/* Timeline */}
       <div className="relative">
-        {/* Timeline Line */}
         <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-purple-500 to-pink-500 rounded-full" />
         {experiences.map((exp, index) => (
           <motion.div
@@ -36,7 +33,6 @@ export const ExperienceTab: React.FC<ExperienceTabProps> = ({ experiences }) => 
             viewport={{ once: true }}
             className="relative mb-12 last:mb-0"
           >
-            {/* Timeline Dot */}
             <motion.div
               className={`absolute left-6 w-4 h-4 rounded-full border-4 border-background shadow-lg ${exp.current
                 ? 'bg-gradient-to-r from-blue-500 to-purple-500'
@@ -53,7 +49,6 @@ export const ExperienceTab: React.FC<ExperienceTabProps> = ({ experiences }) => 
                 />
               )}
             </motion.div>
-            {/* Content Card */}
             <motion.div
               className="ml-16"
               whileHover={{ scale: 1.01, y: -2 }}
@@ -100,7 +95,6 @@ export const ExperienceTab: React.FC<ExperienceTabProps> = ({ experiences }) => 
                   <p className="text-muted-foreground leading-relaxed text-lg">
                     {exp.description}
                   </p>
-                  {/* Key Achievements */}
                   <div>
                     <h4 className="font-semibold mb-3 text-foreground flex items-center gap-2">
                       <TrendingUp className="w-4 h-4 text-green-500" />
@@ -122,7 +116,6 @@ export const ExperienceTab: React.FC<ExperienceTabProps> = ({ experiences }) => 
                       ))}
                     </div>
                   </div>
-                  {/* Technologies */}
                   <div>
                     <h4 className="font-semibold mb-3 text-foreground flex items-center gap-2">
                       <Code2 className="w-4 h-4 text-blue-500" />

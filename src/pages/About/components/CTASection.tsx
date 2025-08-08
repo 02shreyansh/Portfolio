@@ -33,7 +33,6 @@ export const CTASection: React.FC<CTASectionProps> = ({
             whileInView="visible"
             viewport={{ once: true }}
         >
-            {/* Background Pattern */}
             <div className="absolute inset-0 opacity-20">
                 <div className="absolute top-0 left-1/4 w-32 h-32 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full blur-3xl" />
                 <div className="absolute bottom-0 right-1/4 w-40 h-40 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full blur-3xl" />
@@ -159,7 +158,6 @@ export const CTASection: React.FC<CTASectionProps> = ({
                     </motion.div>
                 </motion.div>
 
-                {/* Quick Contact Info */}
                 <motion.div
                     className="mt-12 pt-8 border-t border-border/30"
                     initial={{ opacity: 0 }}

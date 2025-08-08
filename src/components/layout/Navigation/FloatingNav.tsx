@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, type Variants } from "framer-motion";
-import { Home, User, Briefcase, MessageSquare, FileText, Github, Linkedin, Mail, ArrowUp } from "lucide-react";
+import { Home, User, Briefcase, MessageSquare, FileText, Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "../../ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Separator } from "@/components/ui/separator";
 import ThemeToggle from "./ThemeToggle";
@@ -34,12 +34,11 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
 }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [showScrollTop, setShowScrollTop] = useState(false);
+  
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const { scrollY } = useScroll();
 
-  // Memoized navigation items to prevent re-renders
   const navItems: NavItem[] = useMemo(() => [
     { href: "/", label: "Home", icon: Home },
     { href: "/about", label: "About", icon: User },
@@ -48,52 +47,37 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
     { href: "/contact", label: "Contact", icon: MessageSquare }
   ], []);
 
-  // Memoized social links
   const socialLinks: SocialLink[] = useMemo(() => [
-    { href: "https://github.com", label: "GitHub", icon: Github },
-    { href: "https://linkedin.com", label: "LinkedIn", icon: Linkedin },
-    { href: "mailto:hello@example.com", label: "Email", icon: Mail }
+    { href: "https://github.com/02shreyansh", label: "GitHub", icon: Github },
+    { href: "https://www.linkedin.com/in/shreyansh-techenthusiastic/", label: "LinkedIn", icon: Linkedin },
+    { href: "mailto:02.shreyansh.10@gmail.com", label: "Email", icon: Mail }
   ], []);
 
-  // Handle scroll visibility with useEffect and useCallback
   const updateScrollState = useCallback((latest: number) => {
     const scrollThreshold = 150;
-    const scrollTopThreshold = 300;
-    
-    // Update scroll direction visibility
     if (latest > lastScrollY && latest > scrollThreshold && !isHovered) {
       setIsVisible(false);
     } else {
       setIsVisible(true);
     }
-
-    // Update blur effect
     setIsScrolled(latest > 50);
-    
-    // Show scroll to top button
-    setShowScrollTop(latest > scrollTopThreshold);
-    
     setLastScrollY(latest);
   }, [lastScrollY, isHovered]);
 
-  // Listen to scroll changes
   useMotionValueEvent(scrollY, "change", updateScrollState);
 
-  // Keep nav visible when hovered
   useEffect(() => {
     if (isHovered) {
       setIsVisible(true);
     }
   }, [isHovered]);
 
-  // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setIsVisible(prev => !prev);
       }
       
-      // Number key navigation (1-5 for nav items)
       const numKey = parseInt(event.key);
       if (numKey >= 1 && numKey <= navItems.length && event.altKey) {
         event.preventDefault();
@@ -105,10 +89,8 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [navItems]);
 
-  // Handle window resize
   useEffect(() => {
     const handleResize = () => {
-      // Reset visibility on resize to ensure mobile compatibility
       setIsVisible(true);
     };
 
@@ -116,23 +98,15 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Navigation handler with callback
   const handleNavigation = useCallback((href: string, external?: boolean) => {
     if (external) {
       window.open(href, '_blank', 'noopener,noreferrer');
     } else {
       onNavigate?.(href);
-      // Fallback navigation
       window.location.href = href;
     }
   }, [onNavigate]);
 
-  // Scroll to top handler
-  const scrollToTop = useCallback(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
-  // Active state checker
   const isActive = useCallback((href: string) => {
     if (href === '/') {
       return currentPath === href;
@@ -140,7 +114,6 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
     return currentPath.startsWith(href);
   }, [currentPath]);
 
-  // Motion variants - properly typed
   const navVariants: Variants = {
     hidden: {
       y: 100,
@@ -228,7 +201,6 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            {/* Main Navigation Items */}
             <motion.div 
               className="flex items-center gap-1"
               variants={containerVariants}
@@ -263,8 +235,6 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
                           `}
                         >
                           <Icon className="h-5 w-5" />
-                          
-                          {/* Badge */}
                           {item.badge && (
                             <motion.div
                               className="absolute -top-1 -right-1"
@@ -287,8 +257,6 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
                               </Badge>
                             </motion.div>
                           )}
-
-                          {/* Active indicator */}
                           {active && (
                             <motion.div
                               className="absolute -bottom-1 left-1/2 -translate-x-1/2
@@ -312,11 +280,6 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
                     >
                       <div className="flex items-center gap-2">
                         {item.label}
-                        {item.badge && (
-                          <Badge variant="outline" className="text-xs">
-                            {item.badge}
-                          </Badge>
-                        )}
                       </div>
                     </TooltipContent>
                   </Tooltip>
@@ -325,8 +288,6 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
             </motion.div>
 
             <Separator orientation="vertical" className="h-6 mx-1" />
-
-            {/* Theme Toggle */}
             <motion.div
               variants={itemVariants}
               initial="hidden"
@@ -340,7 +301,6 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
 
             <Separator orientation="vertical" className="h-6 mx-1" />
 
-            {/* Social Links */}
             <motion.div 
               className="flex items-center gap-1"
               variants={containerVariants}
@@ -384,40 +344,6 @@ const FloatingNav: React.FC<FloatingNavProps> = ({
                 );
               })}
             </motion.div>
-
-            {/* Scroll to Top Button */}
-            <AnimatePresence>
-              {showScrollTop && (
-                <>
-                  <Separator orientation="vertical" className="h-6 mx-1" />
-                  <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={scrollToTop}
-                          className="h-9 w-9 rounded-lg
-                                   text-muted-foreground hover:text-foreground
-                                   hover:bg-accent/50
-                                   transition-all duration-200"
-                        >
-                          <ArrowUp className="h-4 w-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="top" sideOffset={8}>
-                        Scroll to Top
-                      </TooltipContent>
-                    </Tooltip>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
           </motion.nav>
         )}
       </AnimatePresence>

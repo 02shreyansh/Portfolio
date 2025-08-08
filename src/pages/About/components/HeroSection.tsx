@@ -45,14 +45,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          {/* Enhanced Profile Image */}
           <motion.div
             className="relative w-40 h-40 mx-auto mb-8"
             initial={{ scale: 0, rotate: -180 }}
             animate={isHeroInView ? { scale: 1, rotate: 0 } : {}}
             transition={{ duration: 1, ease: "backOut" }}
           >
-            {/* Glow Effect */}
             <motion.div
               className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-full blur-2xl opacity-30"
               animate={{
@@ -65,7 +63,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 ease: "linear"
               }}
             />
-            {/* Profile Container */}
             <motion.div
               className="relative w-full h-full rounded-full overflow-hidden border-4 border-white/20 backdrop-blur-sm bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 shadow-2xl"
               whileHover={{
@@ -85,7 +82,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 </motion.span>
               </div>
             </motion.div>
-            {/* Orbital Elements */}
             {[...Array(3)].map((_, i) => (
               <motion.div
                 key={i}
@@ -107,7 +103,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               </motion.div>
             ))}
           </motion.div>
-          {/* Enhanced Text Content */}
           <motion.div variants={itemVariants}>
             <motion.h1
               className="text-5xl lg:text-7xl font-bold mb-4 bg-gradient-to-r from-foreground via-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight"
@@ -134,7 +129,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {personalInfo.subtitle}
             </motion.p>
           </motion.div>
-          {/* Enhanced Stats Grid */}
           <motion.div
             ref={statsRef}
             className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto"
@@ -187,7 +181,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               );
             })}
           </motion.div>
-          {/* Enhanced CTA Buttons */}
           <motion.div
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
             variants={itemVariants}
@@ -223,7 +216,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               </Button>
             </motion.div>
           </motion.div>
-          {/* Animation Toggle */}
           <motion.div
             className="flex items-center justify-center gap-3 text-sm text-muted-foreground"
             variants={itemVariants}

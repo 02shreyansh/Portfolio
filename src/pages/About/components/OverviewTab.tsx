@@ -41,7 +41,6 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
             />
           </div>
           <div className="grid lg:grid-cols-2 gap-8 items-center">
-            {/* Bio Section */}
             <div className="space-y-6">
               <motion.div
                 className="space-y-4 text-lg text-muted-foreground leading-relaxed"
@@ -68,7 +67,6 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
                   with the community.
                 </p>
               </motion.div>
-              {/* Quick Stats */}
               <motion.div
                 className="grid grid-cols-2 gap-4 pt-4"
                 initial={{ opacity: 0, y: 20 }}
@@ -98,7 +96,6 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
                 })}
               </motion.div>
             </div>
-            {/* Testimonial Carousel */}
             <motion.div
               className="relative"
               initial={{ opacity: 0, x: 30 }}
@@ -142,7 +139,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
                       </div>
                     </motion.div>
                   </AnimatePresence>
-                  {/* Testimonial Navigation */}
+
                   <div className="flex justify-center gap-2 mt-4">
                     {testimonials.map((_, i) => (
                       <button

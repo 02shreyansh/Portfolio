@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import {  useMemo, useCallback } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   Home,
@@ -27,7 +27,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Badge } from "@/components/ui/badge";
@@ -48,9 +47,8 @@ interface NavItem {
 
 const AppSidebar: React.FC = () => {
   const location = useLocation();
-  const { state, open, setOpen, openMobile, setOpenMobile } = useSidebar();
+  const {  open, setOpen, } = useSidebar();
 
-  // Navigation items
   const navItems: NavItem[] = useMemo(() => [
     { href: "/", label: "Home", icon: Home },
     { href: "/about", label: "About", icon: User },
@@ -65,12 +63,10 @@ const AppSidebar: React.FC = () => {
     { href: "/resume", label: "Resume", icon: FileText }
   ], []);
 
-  // Check active state
   const isActive = useCallback((href: string) => {
     return location.pathname === href || location.pathname.startsWith(`${href}/`);
   }, [location.pathname]);
 
-  // Toggle sidebar
   const toggleSidebar = () => {
     setOpen(!open);
   };
@@ -127,7 +123,6 @@ const AppSidebar: React.FC = () => {
                   </SidebarMenuItem>
                 );
 
-                // Show tooltip when collapsed
                 if (!open) {
                   return (
                     <TooltipProvider key={href}>

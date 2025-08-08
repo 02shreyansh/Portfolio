@@ -1,4 +1,3 @@
-// components/layout/Header.tsx
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Menu } from "lucide-react";
@@ -11,7 +10,6 @@ const Header: React.FC = () => {
 
   return (
     <header className="relative z-40 w-full">
-      {/* Subtle gradient backdrop */}
       <motion.div
         className="pointer-events-none absolute inset-0 bg-gradient-to-b
                    from-background/90 to-transparent backdrop-blur-md"
@@ -22,10 +20,7 @@ const Header: React.FC = () => {
 
       <div className="mx-auto flex max-w-7xl items-center justify-between
                       px-4 py-4 sm:px-6 lg:px-8">
-        
-        {/* Left section with sidebar trigger and logo */}
         <div className="flex items-center gap-3">
-          {/* Sidebar trigger - visible on mobile and when sidebar is available */}
           <Button
             variant="ghost"
             size="icon"
@@ -36,7 +31,6 @@ const Header: React.FC = () => {
             <Menu className="h-4 w-4" />
           </Button>
 
-          {/* Logo */}
           <Link
             to="/"
             className="text-lg font-bold tracking-tight text-foreground
@@ -45,8 +39,6 @@ const Header: React.FC = () => {
             MyPortfolio
           </Link>
         </div>
-
-        {/* Global Navigation (handles desktop, mobile, breadcrumbs, etc.) */}
         <Navigation />
       </div>
     </header>

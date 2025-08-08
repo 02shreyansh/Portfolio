@@ -132,9 +132,9 @@ const About: React.FC = () => {
     if (method === 'email') {
       window.location.href = `mailto:${personalInfo.email}`;
     } else if (method === 'github') {
-      window.open('https://github.com/shreyansh', '_blank');
+      window.open('https://github.com/02shreyansh', '_blank');
     } else if (method === 'linkedin') {
-      window.open('https://linkedin.com/in/shreyansh', '_blank');
+      window.open('https://www.linkedin.com/in/shreyansh-techenthusiastic/', '_blank');
     }
   }, [personalInfo.email]);
 

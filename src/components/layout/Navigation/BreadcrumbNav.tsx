@@ -1,22 +1,21 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
-import { ChevronRight, Home, ArrowLeft, MoreHorizontal, ExternalLink } from "lucide-react";
-import { 
-  Breadcrumb, 
-  BreadcrumbItem, 
-  BreadcrumbLink, 
-  BreadcrumbList, 
-  BreadcrumbPage, 
-  BreadcrumbSeparator 
+import { ChevronRight, MoreHorizontal, ExternalLink } from "lucide-react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 
 interface BreadcrumbItem {
@@ -43,11 +42,8 @@ const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
   items,
   currentPath = "",
   maxItems = 4,
-  showBackButton = true,
-  showHomeButton = true,
   className,
   onNavigate,
-  onBack
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -76,14 +72,6 @@ const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
     }
   }, [onNavigate]);
 
-  const handleBack = useCallback(() => {
-    if (onBack) {
-      onBack();
-    } else {
-      window.history.back();
-    }
-  }, [onBack]);
-
   const processedItems = useMemo(() => {
     if (items.length <= maxItems) {
       return { visibleItems: items, collapsedItems: [] };
@@ -91,8 +79,8 @@ const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
 
     const keepEnd = Math.max(2, maxItems - 2);
     const visibleItems = [
-      items[0], 
-      ...items.slice(-keepEnd) 
+      items[0],
+      ...items.slice(-keepEnd)
     ];
 
     const collapsedItems = items.slice(1, items.length - keepEnd);
@@ -100,17 +88,16 @@ const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
     return { visibleItems, collapsedItems };
   }, [items, maxItems]);
 
-  // Motion variants
   const containerVariants: Variants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: -10,
       transition: { duration: 0.2 }
     },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.3,
         staggerChildren: 0.05
       }
@@ -118,16 +105,16 @@ const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
   };
 
   const itemVariants: Variants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       x: -10,
       scale: 0.95
     },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       x: 0,
       scale: 1,
-      transition: { 
+      transition: {
         duration: 0.2,
         ease: "easeOut"
       }
@@ -140,8 +127,8 @@ const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
 
   const separatorVariants: Variants = {
     hidden: { opacity: 0, scale: 0.8 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
       transition: { duration: 0.2 }
     }
@@ -152,7 +139,7 @@ const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
   }
 
   return (
-    <TooltipProvider delayDuration={200}>
+    <>
       <motion.nav
         className={`
           flex items-center gap-2 p-2 mb-4
@@ -166,51 +153,6 @@ const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
         animate="visible"
         layout
       >
-        {/* Back Button */}
-        {showBackButton && (
-          <motion.div variants={itemVariants}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleBack}
-                  className="h-8 w-8 p-0 hover:bg-accent/50
-                           transition-colors duration-200"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" sideOffset={4}>
-                Go Back
-              </TooltipContent>
-            </Tooltip>
-          </motion.div>
-        )}
-
-        {/* Home Button */}
-        {showHomeButton && (
-          <motion.div variants={itemVariants}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant={currentPath === "/" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => handleNavigate("/")}
-                  className="h-8 w-8 p-0 hover:bg-accent/50
-                           transition-all duration-200"
-                >
-                  <Home className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" sideOffset={4}>
-                Home
-              </TooltipContent>
-            </Tooltip>
-          </motion.div>
-        )}
-
-        {/* Breadcrumb Component */}
         <Breadcrumb className="flex-1">
           <BreadcrumbList className="flex items-center gap-1">
             {processedItems.visibleItems.map((item, index) => {
@@ -227,7 +169,6 @@ const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
-                  {/* Show collapsed items dropdown after first item */}
                   {isFirst && processedItems.collapsedItems.length > 0 && (
                     <>
                       <BreadcrumbItem>
@@ -263,8 +204,6 @@ const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
                           <ChevronRight className="h-3.5 w-3.5" />
                         </BreadcrumbSeparator>
                       </motion.div>
-
-                      {/* Collapsed items dropdown */}
                       <BreadcrumbItem>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -309,7 +248,6 @@ const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
                     </>
                   )}
 
-                  {/* Regular breadcrumb item */}
                   {!(isFirst && processedItems.collapsedItems.length > 0) && (
                     <>
                       <BreadcrumbItem>
@@ -386,7 +324,7 @@ const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
           </motion.div>
         )}
       </AnimatePresence>
-    </TooltipProvider>
+    </>
   );
 };
 

@@ -55,7 +55,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
   const { scrollY } = useScroll();
   const navigationRef = useRef<HTMLDivElement>(null);
 
-  // Enhanced navigation items with categories
   const navigationItems: NavigationItem[] = useMemo(() => [
     { 
       href: "/", 
@@ -140,7 +139,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
     }
   ], []);
 
-  // Enhanced scroll tracking
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() || 0;
     const diff = latest - previous;
@@ -157,7 +155,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
     setLastScrollY(latest);
   });
 
-  // Enhanced responsive behavior with touch detection
   useEffect(() => {
     const checkDevice = () => {
       const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -175,10 +172,8 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
     };
   }, []);
 
-  // Prevent scroll when mobile drawer is open
   useEffect(() => {
     const handleTouchMove = (e: TouchEvent) => {
-      // Allow scrolling in specific elements if needed
       const target = e.target as Element;
       if (target.closest('.mobile-drawer-content')) {
         return;
@@ -191,7 +186,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
     }
   }, [isMobile]);
 
-  // Generate breadcrumbs with enhanced path handling
   const generateBreadcrumbs = useCallback((): BreadcrumbItem[] => {
     const pathSegments = location.pathname.split('/').filter(Boolean);
     
@@ -234,7 +228,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
           badge: pathInfo.badge
         });
       } else {
-        // Handle dynamic routes with better formatting
         const capitalizedSegment = segment
           .split('-')
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -252,7 +245,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
     return breadcrumbs;
   }, [location.pathname]);
 
-  // Enhanced back button with history management
   const handleBack = useCallback(() => {
     if (window.history.length > 1) {
       window.history.back();
@@ -261,7 +253,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
     }
   }, []);
 
-  // Scroll to top functionality
   const scrollToTop = useCallback(() => {
     window.scrollTo({
       top: 0,
@@ -269,7 +260,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
     });
   }, []);
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.altKey && e.key === 'h') {
@@ -281,7 +271,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
         handleBack();
       }
       if (e.key === 'Escape' && isMobile) {
-        // Close mobile drawer if open
         const closeEvent = new CustomEvent('closeMobileDrawer');
         window.dispatchEvent(closeEvent);
       }
@@ -296,7 +285,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
 
   return (
     <div className={`relative ${className}`} ref={navigationRef}>
-      {/* Desktop Navigation - Enhanced FloatingNav */}
       <AnimatePresence>
         {!isMobile && (
           <motion.div
@@ -327,8 +315,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Enhanced Mobile Navigation */}
       <AnimatePresence>
         {isMobile && (
           <motion.div
@@ -349,8 +335,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Enhanced Breadcrumb Navigation */}
       <AnimatePresence>
         {currentPath !== "/" && breadcrumbItems.length > 1 && (
           <motion.div
@@ -386,8 +370,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Enhanced Theme Toggle */}
       {!isMobile && (
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
@@ -399,7 +381,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
         </motion.div>
       )}
 
-      {/* Scroll to Top Button - Enhanced for Mobile */}
       <AnimatePresence>
         {showScrollToTop && (
           <motion.button
@@ -427,12 +408,10 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
         )}
       </AnimatePresence>
 
-      {/* Mobile Safe Area Spacer */}
       {isMobile && (
         <div className="h-safe-area-inset-bottom bg-background/95 backdrop-blur-xl border-t border-border/50" />
       )}
 
-      {/* Accessibility Skip Link */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg"

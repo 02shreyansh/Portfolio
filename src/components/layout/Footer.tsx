@@ -1,12 +1,10 @@
-import { useState, useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import {  useMemo } from "react";
+import { motion } from "framer-motion";
 import {
-  ArrowUp,
   Github,
   Linkedin,
   Mail,
   Twitter,
-  Heart,
   ExternalLink
 } from "lucide-react";
 
@@ -49,21 +47,14 @@ const QUICK_LINK_SECTIONS = [
 ];
 
 const SOCIAL_LINKS = [
-  { href: "https://github.com/yourusername", label: "GitHub", icon: Github, external: true },
-  { href: "https://linkedin.com/in/yourusername", label: "LinkedIn", icon: Linkedin, external: true },
+  { href: "https://github.com/02shreyansh", label: "GitHub", icon: Github, external: true },
+  { href: "https://www.linkedin.com/in/shreyansh-techenthusiastic/", label: "LinkedIn", icon: Linkedin, external: true },
   { href: "https://twitter.com/yourusername", label: "Twitter", icon: Twitter, external: true },
-  { href: "mailto:hello@example.com", label: "Email", icon: Mail, external: false }
+  { href: "mailto:02.shreyansh.10@gmail.com", label: "Email", icon: Mail, external: false }
 ];
 
 const Footer: React.FC = () => {
   const currentYear = useMemo(() => new Date().getFullYear(), []);
-  const [showTopBtn, setShowTopBtn] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setShowTopBtn(window.scrollY > 300);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const openLink = (href: string, external: boolean) => {
     if (external) {
@@ -92,9 +83,7 @@ const Footer: React.FC = () => {
             }
           }}
         >
-          {/* Main Grid */}
           <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
-            {/* Brand & Description */}
             <motion.div
               className="space-y-4"
               variants={{ 
@@ -114,8 +103,6 @@ const Footer: React.FC = () => {
                 Building beautiful, performant, and modern web experiences with passion and precision.
               </p>
             </motion.div>
-
-            {/* Quick Links Sections */}
             {QUICK_LINK_SECTIONS.map(({ title, links }, sectionIndex) => (
               <motion.div
                 key={title}
@@ -160,8 +147,6 @@ const Footer: React.FC = () => {
           </div>
 
           <Separator className="my-8" />
-
-          {/* Bottom Bar */}
           <motion.div
             className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between"
             variants={{ 
@@ -169,19 +154,10 @@ const Footer: React.FC = () => {
               visible: { opacity: 1, transition: { duration: 0.6, delay: 0.3 } } 
             }}
           >
-            {/* Copyright */}
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <span>© {currentYear} • Made with</span>
-              <motion.div
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                <Heart className="h-4 w-4 text-red-600 fill-current mx-1" />
-              </motion.div>
-              <span>React &amp; TypeScript</span>
+              <span>© {currentYear} • Made by</span>
+              <span>Shreyansh</span>
             </div>
-
-            {/* Social Links */}
             <motion.div 
               className="flex gap-3"
               variants={{
@@ -226,42 +202,8 @@ const Footer: React.FC = () => {
                 </motion.div>
               ))}
             </motion.div>
-
-            {/* Back to Top Button */}
-            <AnimatePresence>
-              {showTopBtn && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.8, y: 20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="h-10 w-10 shadow-lg hover:shadow-xl transition-all duration-200"
-                        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                        aria-label="Back to top"
-                      >
-                        <motion.div
-                          animate={{ y: [-2, 0, -2] }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
-                        >
-                          <ArrowUp className="h-5 w-5" />
-                        </motion.div>
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top">Back to top</TooltipContent>
-                  </Tooltip>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </motion.div>
         </motion.div>
-
-        {/* Subtle background animation */}
         <motion.div
           className="absolute inset-0 -z-10 opacity-5"
           animate={{

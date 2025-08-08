@@ -49,7 +49,6 @@ const EnhancedThemeToggle = () => {
 
   return (
     <div className="relative">
-      {/* Glow effect */}
       <motion.div
         className={`absolute inset-0 rounded-xl bg-gradient-to-r ${getCurrentGradient()} opacity-0 blur-lg`}
         animate={{
@@ -58,8 +57,6 @@ const EnhancedThemeToggle = () => {
         }}
         transition={{ duration: 0.3, ease: "easeOut" }}
       />
-      
-      {/* Main button */}
       <motion.button
         onClick={handleToggle}
         onMouseEnter={() => setIsHovered(true)}
@@ -89,7 +86,6 @@ const EnhancedThemeToggle = () => {
             : undefined
         }}
       >
-        {/* Animated background gradient */}
         <motion.div
           className={`absolute inset-0 rounded-xl bg-gradient-to-br ${getCurrentGradient()} opacity-0`}
           animate={{
@@ -97,8 +93,6 @@ const EnhancedThemeToggle = () => {
           }}
           transition={{ duration: 0.2 }}
         />
-
-        {/* Icon container */}
         <motion.div
           className="relative w-6 h-6 z-10"
           initial={false}
@@ -124,8 +118,6 @@ const EnhancedThemeToggle = () => {
               />
             </motion.div>
           </AnimatePresence>
-
-          {/* Sparkle effect on hover */}
           <AnimatePresence>
             {isHovered && (
               <motion.div
@@ -158,8 +150,6 @@ const EnhancedThemeToggle = () => {
             />
           </motion.div>
         )}
-
-        {/* Ripple effect */}
         <AnimatePresence>
           {isPressed && (
             <motion.div
@@ -172,8 +162,6 @@ const EnhancedThemeToggle = () => {
           )}
         </AnimatePresence>
       </motion.button>
-
-      {/* Enhanced tooltip */}
       <motion.div
         className="absolute -bottom-12 left-1/2 -translate-x-1/2
                    px-3 py-2 text-sm font-medium
@@ -205,7 +193,6 @@ const EnhancedThemeToggle = () => {
                         rotate-45 backdrop-blur-sm" />
       </motion.div>
 
-      {/* Floating particles effect */}
       <AnimatePresence>
         {isPressed && (
           <>

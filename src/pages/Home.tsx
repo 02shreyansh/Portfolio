@@ -1,11 +1,7 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, useScroll, useTransform, useInView, type Variants, useMotionValue, useSpring } from "framer-motion";
-import { 
+import {
   ArrowRight,
-  Code2, 
-  Palette, 
-  Zap, 
-  Globe,
   ChevronDown,
   Mouse,
   Sparkles,
@@ -16,49 +12,18 @@ import {
   Briefcase,
   Users,
   Target,
-  Rocket,
-  Award,
-  TrendingUp,
-  Shield,
-  Clock,
   Heart,
-  Lightbulb,
-  Layers
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-
-interface Service {
-  title: string;
-  description: string;
-  features: string[];
-  icon: React.ComponentType<{ className?: string }>;
-  gradient: string;
-}
-
-interface Process {
-  step: number;
-  title: string;
-  description: string;
-  icon: React.ComponentType<{ className?: string }>;
-}
-
-interface Testimonial {
-  name: string;
-  role: string;
-  company: string;
-  content: string;
-  rating: number;
-  image: string;
-}
-
-interface Value {
-  title: string;
-  description: string;
-  icon: React.ComponentType<{ className?: string }>;
-  color: string;
-}
+import type {
+  Service,
+  Process,
+  Testimonial,
+  Value
+} from "@/utils/Home/Interface";
+import { Services, WorkProcesses, Values, Testimonials } from "@/utils/Home/Description"
 
 const Home: React.FC = () => {
   const [typedText, setTypedText] = useState("");
@@ -66,7 +31,7 @@ const Home: React.FC = () => {
   const [isTyping, setIsTyping] = useState(true);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  
+
   const heroRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
   const processRef = useRef<HTMLDivElement>(null);
@@ -74,18 +39,18 @@ const Home: React.FC = () => {
   const testimonialsRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
-  
+
   const { scrollY } = useScroll();
   const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
   const heroScale = useTransform(scrollY, [0, 400], [1, 0.8]);
   const parallaxY = useTransform(scrollY, [0, 1000], [0, -200]);
-  
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const springConfig = { damping: 25, stiffness: 700 };
   const mouseXSpring = useSpring(mouseX, springConfig);
   const mouseYSpring = useSpring(mouseY, springConfig);
-  
+
   const isHeroInView = useInView(heroRef, { once: true });
   const isServicesInView = useInView(servicesRef, { once: true, margin: "-100px" });
   const isProcessInView = useInView(processRef, { once: true, margin: "-100px" });
@@ -97,7 +62,7 @@ const Home: React.FC = () => {
   // Typing animation words
   const words = useMemo(() => [
     "Developer",
-    "Designer", 
+    "Designer",
     "Creator",
     "Innovator",
     "Problem Solver",
@@ -105,128 +70,48 @@ const Home: React.FC = () => {
   ], []);
 
   // Enhanced Services data
-  const services: Service[] = useMemo(() => [
-    {
-      title: "Frontend Development",
-      description: "Creating modern, responsive web applications with cutting-edge technologies and frameworks",
-      features: ["React & Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Performance Optimization"],
-      icon: Code2,
-      gradient: "from-blue-400 via-blue-500 to-blue-600"
-    },
-    {
-      title: "UI/UX Design",
-      description: "Crafting beautiful, intuitive interfaces that provide exceptional user experiences",
-      features: ["User Research", "Wireframing", "Prototyping", "Design Systems", "Accessibility"],
-      icon: Palette,
-      gradient: "from-purple-400 via-purple-500 to-purple-600"
-    },
-    {
-      title: "Performance Optimization",
-      description: "Building lightning-fast applications optimized for speed, SEO, and user engagement",
-      features: ["Core Web Vitals", "SEO Optimization", "Bundle Analysis", "Caching Strategies", "CDN Integration"],
-      icon: Zap,
-      gradient: "from-yellow-400 via-orange-500 to-red-500"
-    },
-    {
-      title: "Full-Stack Solutions",
-      description: "End-to-end development solutions from concept to deployment and maintenance",
-      features: ["API Development", "Database Design", "Cloud Deployment", "DevOps", "Monitoring"],
-      icon: Globe,
-      gradient: "from-green-400 via-emerald-500 to-teal-600"
-    }
-  ], []);
+  const services: Service[] = useMemo(() =>
+    Services.map(Service => ({
+      title: Service.title,
+      description: Service.description,
+      features: Service.features,
+      icon: Service.icon,
+      gradient: Service.gradient
+    }))
+    ,
+    []);
 
   // Work Process
-  const workProcess: Process[] = useMemo(() => [
-    {
-      step: 1,
-      title: "Discovery & Strategy",
-      description: "Understanding your vision, goals, and requirements to create a comprehensive project roadmap",
-      icon: Lightbulb
-    },
-    {
-      step: 2,
-      title: "Design & Planning",
-      description: "Creating wireframes, mockups, and detailed project specifications with your feedback",
-      icon: Layers
-    },
-    {
-      step: 3,
-      title: "Development & Testing",
-      description: "Building your solution with clean code, regular updates, and thorough testing",
-      icon: Code2
-    },
-    {
-      step: 4,
-      title: "Launch & Support",
-      description: "Deploying your project and providing ongoing support, maintenance, and improvements",
-      icon: Rocket
-    }
-  ], []);
+  const workProcess: Process[] = useMemo(() =>
+    WorkProcesses.map(Progress => ({
+      step: Progress.step,
+      title: Progress.title,
+      description: Progress.description,
+      icon: Progress.icon
+    }))
+    , []);
 
   // Core Values
-  const coreValues: Value[] = useMemo(() => [
-    {
-      title: "Quality First",
-      description: "Every line of code is crafted with precision and attention to detail",
-      icon: Award,
-      color: "text-blue-500"
-    },
-    {
-      title: "Innovation",
-      description: "Staying ahead with the latest technologies and creative solutions",
-      icon: TrendingUp,
-      color: "text-purple-500"
-    },
-    {
-      title: "Reliability",
-      description: "Delivering projects on time with consistent communication and support",
-      icon: Shield,
-      color: "text-green-500"
-    },
-    {
-      title: "Efficiency",
-      description: "Optimized workflows and performance-focused development practices",
-      icon: Clock,
-      color: "text-orange-500"
-    }
-  ], []);
+  const coreValues: Value[] = useMemo(() =>
+    Values.map(value => ({
+      title: value.title,
+      description: value.description,
+      icon: value.icon,
+      color: value.color
+    }))
+    , []);
 
   // Enhanced Testimonials
-  const testimonials: Testimonial[] = useMemo(() => [
-    {
-      name: "Sarah Johnson",
-      role: "Product Manager",
-      company: "TechFlow Inc",
-      content: "Shreyansh transformed our outdated platform into a modern, high-performing application. His expertise in React and attention to user experience resulted in a 40% increase in user engagement.",
-      rating: 5,
-      image: "/api/placeholder/60/60"
-    },
-    {
-      name: "Michael Chen",
-      role: "CEO & Founder",
-      company: "InnovateLab",
-      content: "Working with Shreyansh was exceptional. He delivered a complex e-commerce solution ahead of schedule and within budget. The performance optimizations alone saved us thousands in server costs.",
-      rating: 5,
-      image: "/api/placeholder/60/60"
-    },
-    {
-      name: "Emily Rodriguez",
-      role: "Design Director",
-      company: "Creative Studios",
-      content: "The UI/UX work exceeded our expectations. Shreyansh has an incredible eye for design and the technical skills to bring even the most complex animations to life seamlessly.",
-      rating: 5,
-      image: "/api/placeholder/60/60"
-    },
-    {
-      name: "David Park",
-      role: "CTO",
-      company: "StartupXYZ",
-      content: "From concept to deployment, Shreyansh handled everything professionally. The full-stack solution he built scales beautifully and has been running flawlessly for months.",
-      rating: 5,
-      image: "/api/placeholder/60/60"
-    }
-  ], []);
+  const testimonials: Testimonial[] = useMemo(() =>
+    Testimonials.map(testimonial => ({
+      name: testimonial.name,
+      role: testimonial.role,
+      company: testimonial.company,
+      content: testimonial.content,
+      rating: testimonial.rating,
+      image: testimonial.image
+    }))
+    , []);
 
   // Optimized typing animation
   useEffect(() => {
@@ -287,23 +172,11 @@ const Home: React.FC = () => {
 
   const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
-        duration: 0.5, 
-        ease: [0.25, 0.25, 0, 1]
-      }
-    }
-  };
-
-  const cardVariants: Variants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: { 
-      opacity: 1, 
-      scale: 1,
-      transition: { 
-        duration: 0.4, 
+      transition: {
+        duration: 0.5,
         ease: [0.25, 0.25, 0, 1]
       }
     }
@@ -341,7 +214,7 @@ const Home: React.FC = () => {
             ease: "easeInOut"
           }}
         />
-        
+
         <motion.div
           className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full opacity-15 blur-3xl"
           style={{
@@ -396,7 +269,7 @@ const Home: React.FC = () => {
       {/* Main Content */}
       <div className="relative z-10">
         {/* Hero Section - Enhanced */}
-        <motion.section 
+        <motion.section
           ref={heroRef}
           className="min-h-screen flex items-center justify-center px-6"
           style={{ opacity: heroOpacity, scale: heroScale }}
@@ -417,7 +290,7 @@ const Home: React.FC = () => {
               </span>
             </motion.div>
 
-            <motion.h1 
+            <motion.h1
               className="text-6xl md:text-8xl lg:text-9xl font-bold mb-8 leading-none"
               variants={itemVariants}
             >
@@ -426,7 +299,7 @@ const Home: React.FC = () => {
               </span>
             </motion.h1>
 
-            <motion.div 
+            <motion.div
               className="text-3xl md:text-5xl lg:text-6xl font-light mb-10 h-20 flex items-center justify-center"
               variants={itemVariants}
             >
@@ -443,15 +316,15 @@ const Home: React.FC = () => {
               </span>
             </motion.div>
 
-            <motion.p 
+            <motion.p
               className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-12"
               variants={itemVariants}
             >
-              Transforming ambitious ideas into exceptional digital experiences through innovative web development, 
+              Transforming ambitious ideas into exceptional digital experiences through innovative web development,
               stunning design, and cutting-edge technology solutions that drive real business results.
             </motion.p>
 
-            <motion.div 
+            <motion.div
               variants={itemVariants}
               className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
             >
@@ -459,12 +332,12 @@ const Home: React.FC = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button 
+                <Button
                   size="lg"
                   className="px-10 py-5 text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-2xl shadow-blue-500/25 rounded-full"
                   onClick={() => {
-                    document.getElementById('services')?.scrollIntoView({ 
-                      behavior: 'smooth' 
+                    document.getElementById('services')?.scrollIntoView({
+                      behavior: 'smooth'
                     });
                   }}
                 >
@@ -477,20 +350,20 @@ const Home: React.FC = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button 
+                <Button
                   variant="outline"
                   size="lg"
                   className="px-10 py-5 text-lg font-semibold border-2 border-primary/30 hover:bg-primary/10 rounded-full"
                   onClick={() => window.location.href = 'mailto:hello@shreyansh.dev'}
                 >
                   Let's Talk
-                  <ArrowUpRight className="w-5 h-5 ml-2" /> 
+                  <ArrowUpRight className="w-5 h-5 ml-2" />
                 </Button>
               </motion.div>
             </motion.div>
 
             {/* Enhanced Stats Preview */}
-            <motion.div 
+            <motion.div
               variants={itemVariants}
               className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto mb-16"
             >
@@ -515,7 +388,7 @@ const Home: React.FC = () => {
               ))}
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
               variants={floatVariants}
               animate="animate"
@@ -528,7 +401,7 @@ const Home: React.FC = () => {
         </motion.section>
 
         {/* Enhanced Services Section */}
-        <motion.section 
+        <motion.section
           id="services"
           ref={servicesRef}
           className="min-h-screen flex items-center px-6 py-20"
@@ -566,12 +439,12 @@ const Home: React.FC = () => {
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ 
-                      duration: 0.6, 
+                    transition={{
+                      duration: 0.6,
                       delay: index * 0.1,
                       ease: [0.25, 0.25, 0, 1]
                     }}
-                    whileHover={{ 
+                    whileHover={{
                       y: -5,
                       transition: { duration: 0.2 }
                     }}
@@ -579,7 +452,7 @@ const Home: React.FC = () => {
                   >
                     <Card className="p-8 h-full bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/10 hover:border-white/20 transition-all duration-300 rounded-3xl">
                       <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-                      
+
                       <CardContent className="relative z-10 p-0">
                         <div className="flex items-start gap-4 mb-6">
                           <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${service.gradient} p-4 shadow-lg`}>
@@ -591,7 +464,7 @@ const Home: React.FC = () => {
                             </h3>
                           </div>
                         </div>
-                        
+
                         <p className="text-muted-foreground leading-relaxed mb-6 text-lg">
                           {service.description}
                         </p>
@@ -614,7 +487,7 @@ const Home: React.FC = () => {
         </motion.section>
 
         {/* Work Process Section */}
-        <motion.section 
+        <motion.section
           ref={processRef}
           className="min-h-screen flex items-center px-6 py-20"
           initial={{ opacity: 0 }}
@@ -651,8 +524,8 @@ const Home: React.FC = () => {
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ 
-                      duration: 0.6, 
+                    transition={{
+                      duration: 0.6,
                       delay: index * 0.15,
                       ease: [0.25, 0.25, 0, 1]
                     }}
@@ -668,11 +541,11 @@ const Home: React.FC = () => {
                             {process.step}
                           </div>
                         </div>
-                        
+
                         <h3 className="text-xl font-semibold mb-4 group-hover:text-blue-600 transition-colors">
                           {process.title}
                         </h3>
-                        
+
                         <p className="text-muted-foreground leading-relaxed">
                           {process.description}
                         </p>
@@ -691,7 +564,7 @@ const Home: React.FC = () => {
         </motion.section>
 
         {/* Core Values Section */}
-        <motion.section 
+        <motion.section
           ref={valuesRef}
           className="min-h-screen flex items-center px-6 py-20"
           initial={{ opacity: 0 }}
@@ -728,8 +601,8 @@ const Home: React.FC = () => {
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ 
-                      duration: 0.5, 
+                    transition={{
+                      duration: 0.5,
                       delay: index * 0.1,
                       ease: [0.25, 0.25, 0, 1]
                     }}
@@ -749,7 +622,7 @@ const Home: React.FC = () => {
         </motion.section>
 
         {/* Enhanced Testimonials Section */}
-        <motion.section 
+        <motion.section
           ref={testimonialsRef}
           className="min-h-screen flex items-center px-6 py-20"
           initial={{ opacity: 0 }}
@@ -784,8 +657,8 @@ const Home: React.FC = () => {
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ 
-                    duration: 0.6, 
+                  transition={{
+                    duration: 0.6,
                     delay: index * 0.1,
                     ease: [0.25, 0.25, 0, 1]
                   }}
@@ -798,13 +671,13 @@ const Home: React.FC = () => {
                           <Star key={i} className="w-5 h-5 text-yellow-500 fill-current" />
                         ))}
                       </div>
-                      
+
                       <Quote className="w-8 h-8 text-blue-500/50 mb-4" />
-                      
+
                       <p className="text-muted-foreground leading-relaxed mb-6 text-lg italic">
                         "{testimonial.content}"
                       </p>
-                      
+
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold">
                           {testimonial.name.split(' ').map(n => n[0]).join('')}
@@ -825,7 +698,7 @@ const Home: React.FC = () => {
         </motion.section>
 
         {/* Stats Section */}
-        <motion.section 
+        <motion.section
           ref={statsRef}
           className="py-20 px-6"
           initial={{ opacity: 0 }}
@@ -865,9 +738,9 @@ const Home: React.FC = () => {
                     initial={{ scale: 0, opacity: 0 }}
                     whileInView={{ scale: 1, opacity: 1 }}
                     viewport={{ once: true }}
-                    transition={{ 
-                      delay: index * 0.1, 
-                      type: "spring", 
+                    transition={{
+                      delay: index * 0.1,
+                      type: "spring",
                       stiffness: 200,
                       duration: 0.6
                     }}
@@ -888,7 +761,7 @@ const Home: React.FC = () => {
         </motion.section>
 
         {/* Enhanced CTA Section */}
-        <motion.section 
+        <motion.section
           ref={ctaRef}
           className="min-h-screen flex items-center px-6 py-20"
           initial={{ opacity: 0 }}
@@ -904,7 +777,7 @@ const Home: React.FC = () => {
               className="relative p-16 md:p-24 rounded-[4rem] bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 backdrop-blur-xl border border-gradient-to-r from-blue-500/20 to-purple-500/20"
             >
               <div className="absolute inset-0 rounded-[4rem] bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 opacity-50" />
-              
+
               <div className="relative z-10 space-y-10">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -912,15 +785,15 @@ const Home: React.FC = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
-                  <Badge 
-                    variant="outline" 
+                  <Badge
+                    variant="outline"
                     className="px-6 py-3 text-sm font-medium border-blue-500/30 text-blue-600 dark:text-blue-400 mb-8"
                   >
                     Ready to Get Started?
                   </Badge>
                 </motion.div>
 
-                <motion.h2 
+                <motion.h2
                   className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 dark:from-white dark:via-blue-100 dark:to-white bg-clip-text text-transparent leading-tight"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -934,14 +807,14 @@ const Home: React.FC = () => {
                   </span>
                 </motion.h2>
 
-                <motion.p 
+                <motion.p
                   className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.4 }}
                 >
-                  Whether you're a startup with a bold vision or an established business looking to innovate, 
+                  Whether you're a startup with a bold vision or an established business looking to innovate,
                   I'm here to transform your ideas into digital reality. Let's collaborate and create something amazing together.
                 </motion.p>
 
@@ -956,7 +829,7 @@ const Home: React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <Button 
+                    <Button
                       size="lg"
                       className="px-12 py-6 text-xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-2xl shadow-blue-500/25 rounded-full"
                       onClick={() => window.location.href = 'mailto:hello@shreyansh.dev'}
@@ -970,7 +843,7 @@ const Home: React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <Button 
+                    <Button
                       variant="outline"
                       size="lg"
                       className="px-12 py-6 text-xl font-semibold border-2 border-primary/30 hover:bg-primary/10 rounded-full"

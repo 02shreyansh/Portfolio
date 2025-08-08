@@ -14,8 +14,7 @@ const BackgroundElements: React.FC<BackgroundElementsProps> = ({ backgroundY, sk
       rotate: [-3, 3, -3],
       transition: {
         duration: 6,
-        repeat: Infinity,
-        ease: [0.445, 0.05, 0.55, 0.95] 
+        repeat: Infinity, 
       }
     }
   }), []);
@@ -27,7 +26,6 @@ const BackgroundElements: React.FC<BackgroundElementsProps> = ({ backgroundY, sk
       transition: {
         duration: 4,
         repeat: Infinity,
-        ease: [0.445, 0.05, 0.55, 0.95] 
       }
     }
   }), []);

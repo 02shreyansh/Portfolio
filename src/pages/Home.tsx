@@ -29,8 +29,8 @@ const Home: React.FC = () => {
   const [typedText, setTypedText] = useState("");
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [, setActiveTestimonial] = useState(0);
+  const [, setMousePosition] = useState({ x: 0, y: 0 });
 
   const heroRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);

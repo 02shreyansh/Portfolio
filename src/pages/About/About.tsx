@@ -15,7 +15,7 @@ import { Eye, Code2, Briefcase, Award } from "lucide-react";
 
 const About: React.FC = () => {
   const [activeTab, setActiveTab] = useState("overview");
-  const [skillsVisible, setSkillsVisible] = useState(false);
+  const [, setSkillsVisible] = useState(false);
   const [downloadCount, setDownloadCount] = useState(0);
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
   const [animationsEnabled, setAnimationsEnabled] = useState(true);
@@ -165,7 +165,6 @@ const About: React.FC = () => {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: [0.22, 1, 0.36, 1]
       }
     }
   };

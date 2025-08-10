@@ -1,7 +1,7 @@
 import { lazy, type LazyExoticComponent, type FC } from "react";
 
 
-const Home:         LazyExoticComponent<FC> = lazy(() => import("@/pages/Home"));
+const Home:         LazyExoticComponent<FC> = lazy(() => import("@/pages/Home/Home"));
 const About:        LazyExoticComponent<FC> = lazy(() => import("@/pages/About/About"));
 const Projects:     LazyExoticComponent<FC> = lazy(() => import("@/pages/Projects"));
 const Experience:   LazyExoticComponent<FC> = lazy(() => import("@/pages/Experience"));
